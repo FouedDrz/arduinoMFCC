@@ -1,0 +1,33 @@
+#######################################
+# Syntax Coloring Map For arduinoFFT
+#######################################
+
+#######################################
+# Datatypes	(KEYWORD1)
+#######################################
+
+arduinoFFT	KEYWORD1
+
+#######################################
+# Methods and Functions (KEYWORD2)
+#######################################
+compute  	KEYWORD2
+apply_hamming_window	KEYWORD2
+apply_mel_filter_bank	KEYWORD2
+create_hamming_window	KEYWORD2
+create_hamming_window   KEYWORD2
+create_dct_matrix       KEYWORD2
+apply_dct               KEYWORD2
+
+#######################################
+# Constants (LITERAL1)
+#######################################
+_num_channels LITERAL1
+_frame_size LITERAL1
+_hop_size LITERAL1
+_mfcc_size LITERAL1
+*_frame LITERAL1
+*_hamming_window LITERAL1
+*_mel_filter_bank LITERAL1
+*_dct_matrix LITERAL1
+*_mfcc_coeffs LITERAL1
