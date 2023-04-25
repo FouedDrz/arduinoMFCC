@@ -1,12 +1,12 @@
 #######################################
-# Syntax Coloring Map For arduinoFFT
+# Syntax Coloring Map For arduinoMFCC
 #######################################
 
 #######################################
 # Datatypes	(KEYWORD1)
 #######################################
 
-arduinoFFT	KEYWORD1
+arduinoMFCC	KEYWORD1
 
 #######################################
 # Methods and Functions (KEYWORD2)
