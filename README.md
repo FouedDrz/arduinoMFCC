@@ -1,6 +1,4 @@
-# arduinoMFCC
-arduinoMFCC
-# MFCC (Mel-Frequency Cepstral Coefficients)
+# arduino MFCC (Mel-Frequency Cepstral Coefficients)
 
 La méthode MFCC est une technique largement utilisée pour extraire des caractéristiques pertinentes du signal audio. Elle est couramment utilisée dans la reconnaissance vocale, la classification des genres musicaux et diverses autres applications liées au traitement du signal audio.
 
