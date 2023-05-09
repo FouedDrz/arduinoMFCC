@@ -6,13 +6,37 @@ La méthode MFCC est une technique largement utilisée pour extraire des caract�
 
 Le processus d'extraction des coefficients MFCC consiste en plusieurs étapes :
 
-1. **Prétraitement** : Le signal audio est prétraité en appliquant un pré-emphase pour augmenter les hautes fréquences.
-2. **Segmentation** : Le signal est divisé en trames de taille fixe (généralement 20 à 40 ms) avec un certain chevauchement entre les trames adjacentes.
-3. **Fenêtrage** : Une fonction de fenêtre (par exemple, une fenêtre de Hamming) est appliquée à chaque trame pour minimiser les discontinuités aux bords de la trame.
-4. **Transformée de Fourier** : La transformée de Fourier à court terme (STFT) est appliquée à chaque trame pour obtenir le spectre de puissance.
-5. **Filtres de Mel** : Le spectre de puissance est passé à travers un ensemble de filtres de Mel pour capturer les caractéristiques perceptuelles du signal audio.
-6. **Logarithme** : On prend le logarithme de l'énergie dans chaque bande de Mel pour imiter la perception humaine de l'intensité.
-7. **Transformée en cosinus discrète** : Enfin, la transformée en cosinus discrète (DCT) est appliquée aux coefficients de Mel pour obtenir les coefficients cepstraux.
+La méthode MFCC est une technique largement utilisée pour extraire des caractéristiques pertinentes du signal audio. Elle est couramment utilisée dans la reconnaissance vocale, la classification des genres musicaux et diverses autres applications liées au traitement du signal audio.
+
+## Principe de base
+
+Le processus d'extraction des coefficients MFCC consiste en plusieurs étapes :
+
+1. **Prétraitement** : Le signal audio est prétraité en appliquant un pré-emphase pour augmenter les hautes fréquences. Cela permet de réduire les problèmes liés à l'atténuation des hautes fréquences dans les systèmes de transmission. La formule de pré-emphase est la suivante :
+
+y[n] = x[n] - α * x[n-1]
+
+où `x(t)` est le signal d'entrée, `y(t)` est le signal de sortie et `α` est le coefficient de pré-emphase (généralement compris entre 0,95 et 0,97).
+
+2. **Segmentation** : Le signal est divisé en trames de taille fixe (généralement 20 à 40 ms) avec un certain chevauchement entre les trames adjacentes. Cette étape est nécessaire pour rendre compte de la nature non stationnaire des signaux audio.
+
+3. **Fenêtrage** : Une fonction de fenêtre (par exemple, Hamming ou Hanning) est appliquée à chaque trame pour minimiser les discontinuités aux bords de la trame. La fenêtre est définie comme suit :
+
+w[n] = 0,5 * (1 - cos(2 * π * n / (N - 1)))
+
+où `w(n)` est la valeur de la fenêtre à l'échantillon `n` et `N` est la taille de la trame.
+
+4. **Transformée de Fourier à court terme (STFT)** : La transformée de Fourier à court terme est appliquée à chaque trame pour obtenir le spectre de puissance. Cette étape permet de passer du domaine temporel au domaine fréquentiel.
+
+5. **Filtres Mel** : Le spectre de puissance est filtré à l'aide d'un banc de filtres en triangle espacés selon l'échelle de fréquence Mel. L'échelle Mel est une échelle de fréquence perceptuelle qui tient compte de la manière dont l'oreille humaine perçoit les fréquences. La relation entre la fréquence Mel `m` et la fréquence linéaire `f` est la suivante :
+
+m = 2595 * log10(1 + f / 700)
+
+6. **Logarithme** : Le logarithme de l'énergie de chaque filtre Mel est calculé. Cette étape permet de compresser les données en réduisant l'échelle dynamique.
+
+7. **Transformée en cosinus discrète (DCT)** : Enfin, la transformée en cosinus discrète est appliquée au spectre log-Mel pour obtenir les coefficients MFCC. Seuls les premiers `k` coefficients sont généralement conservés, où `k`
+
+
 
 Les premiers coefficients MFCC (généralement 12 à 20) sont utilisés comme caractéristiques pour représenter le signal audio.
 
