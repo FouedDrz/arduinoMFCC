@@ -6,12 +6,6 @@ La méthode MFCC est une technique largement utilisée pour extraire des caract�
 
 Le processus d'extraction des coefficients MFCC consiste en plusieurs étapes :
 
-La méthode MFCC est une technique largement utilisée pour extraire des caractéristiques pertinentes du signal audio. Elle est couramment utilisée dans la reconnaissance vocale, la classification des genres musicaux et diverses autres applications liées au traitement du signal audio.
-
-## Principe de base
-
-Le processus d'extraction des coefficients MFCC consiste en plusieurs étapes :
-
 1. **Prétraitement** : Le signal audio est prétraité en appliquant un pré-emphase pour augmenter les hautes fréquences. Cela permet de réduire les problèmes liés à l'atténuation des hautes fréquences dans les systèmes de transmission. La formule de pré-emphase est la suivante :
 
 y[n] = x[n] - α * x[n-1]
