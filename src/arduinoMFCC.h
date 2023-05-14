@@ -44,6 +44,7 @@ private:
     int _frame_size;
     int _hop_size;
     int _mfcc_size;
+    float _samplerate;
     float* _frame;
     float* _hamming_window;
     float* _mel_filter_bank;
