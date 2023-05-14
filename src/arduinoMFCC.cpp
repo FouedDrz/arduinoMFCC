@@ -20,11 +20,13 @@
 
 #include "arduinoMFCC.h"
 
-arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size) {
+arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size, float samplerate) {
     _num_channels = num_channels;
     _frame_size = frame_size;
     _hop_size = hop_size;
     _mfcc_size = mfcc_size;
+    _samplerate=samplerate;
+	
 
     _frame = (float*)malloc(_frame_size * sizeof(float));
     _hamming_window = (float*)malloc(_frame_size * sizeof(float));
@@ -52,7 +54,8 @@ void arduinoMFCC::create_hamming_window() {
 // Fonction privée pour créer les filtres de Mel
 void arduinoMFCC::create_mel_filter_bank() {
     float mel_low_freq = 0;
-    float mel_high_freq = 2595 * log10(1 + (AUDIO_SAMPLE_RATE_EXACT / 2) / 700);
+    //float mel_high_freq = 2595 * log10(1 + (AUDIO_SAMPLE_RATE_EXACT / 2) / 700);
+    float mel_high_freq = 2595 * log10(1 + (_samplerate / 2) / 0   0);
     float mel_freq_delta = (mel_high_freq - mel_low_freq) / (_num_channels + 1);
     float* mel_f = (float*)malloc((_num_channels + 2) * sizeof(float));
 
