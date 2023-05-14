@@ -36,6 +36,7 @@ arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfc
     _hamming_window = (float*)malloc(_frame_size * sizeof(float));
     _mel_filter_bank = (float*)malloc(_num_channels * _frame_size * sizeof(float));
     _dct_matrix = (float*)malloc(_mfcc_size * _num_channels * sizeof(float));
+    _rmfcc_coeffs = (float*)malloc(_mfcc_size * sizeof(float)); 
     _mfcc_coeffs = (float*)malloc(_mfcc_size * sizeof(float)); 
 }
 
@@ -46,6 +47,16 @@ void arduinoMFCC::compute() {
     apply_dct();
 }
 //////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::compute(int _mfcc_size,int _num_channels,int _frame_size,float *_rmfcc_coeffs) {
+    // ... code pour calculer les coefficients arduinoMFCC ...
+    apply_hamming_window(_frame);
+    apply_mel_filter_bank(_num_channels,_frame_size,_frame,_mel_filter_bank,_mfcc_coeffs);
+    apply_dct(_mfcc_size,_num_channels,_frame_size,_mel_filter_bank,_mfcc_coeffs,_rmfcc_coeffs);
+    }
+//////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////
 // Fonction publique pour créer la fenêtre de Hamming
 void arduinoMFCC::create_hamming_window() {
     // ... code pour créer la fenêtre de Hamming ...
@@ -199,14 +210,14 @@ void arduinoMFCC::apply_dct() {
         for (int j = 0; j < _num_channels; j++) {
             sum += _mfcc_coeffs[j] * cos((M_PI * i * (j + 0.5)) / _mfcc_size);
         }
-        _mfcc_coeffs[i] = sum;
+        _rmfcc_coeffs[i] = sum;
     }
 }
 
 /////////////////////////////////////////////////////////////////////////////
 
 // Fonction publique pour appliquer la transformée de cosinus discrète (DCT) au signal audio
-void arduinoMFCC::apply_dct(int _mfcc_size, int _num_channels,int _frame_size,float *_mel_filter_bank, float *_mfcc_coeffs) {
+void arduinoMFCC::apply_dct(int _mfcc_size, int _num_channels,int _frame_size,float *_mel_filter_bank,float *_mfcc_coeffs, float *_rmfcc_coeffs) {
     for (int i = 0; i < _mfcc_size; i++) {
         _mfcc_coeffs[i] = 0.0;
         for (int j = 0; j < _num_channels; j++) {
@@ -219,8 +230,7 @@ void arduinoMFCC::apply_dct(int _mfcc_size, int _num_channels,int _frame_size,fl
         for (int j = 0; j < _num_channels; j++) {
             sum += _mfcc_coeffs[j] * cos((M_PI * i * (j + 0.5)) / _mfcc_size);
         }
-        _mfcc_coeffs[i] = sum;
+        _rmfcc_coeffs[i] = sum;
     }
 }
 
-////////////////////////////////////////////////////////////////////////////////////
