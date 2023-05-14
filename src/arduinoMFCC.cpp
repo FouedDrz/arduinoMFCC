@@ -24,7 +24,7 @@
 #error "Ce code est conçu pour être utilisé uniquement avec Arduino Due. Veuillez utiliser un Arduino Due pour le projet Neurospeech."
 #endif
 
-#define AUDIO_SAMPLE_RATE_EXACT 44100.0 // ou 8000.0
+#define AUDIO_SAMPLE_RATE_EXACT 8000. // 16000. //44100.0 // ou 8000.0 -> supprimer dans la suite du code
 
 arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size, float samplerate) {
     _num_channels = num_channels;
