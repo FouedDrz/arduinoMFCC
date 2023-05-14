@@ -26,7 +26,7 @@
 class arduinoMFCC {
 public:
     // Constructeur
-    arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size, int samplerate);
+    arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size, float samplerate);
 
     // Fonctions publiques
     void compute();
