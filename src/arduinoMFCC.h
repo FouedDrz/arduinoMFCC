@@ -31,25 +31,34 @@ public:
     // Fonctions publiques
     void compute();
     void apply_hamming_window();
+    void apply_hamming_window(float *);
+    void apply_hamming_window(float *,float *);
     void apply_mel_filter_bank();
-    void apply_dct();
-    void create_hamming_window();
+    void apply_mel_filter_bank(int , int ,float *, float *, float *);
     void create_mel_filter_bank();
+    void create_mel_filter_bank(float , int ,int, float* );
+    void apply_dct();
+    void apply_dct(int , int ,int ,float *, float *);
+    void create_hamming_window();
+    void create_hamming_window(int );
     void create_dct_matrix();
+  
     float* coeffs;
+    float _samplerate;
+    float* _frame;
+    int _frame_size;
+    float* _mfcc_coeffs;
+    int _num_channels;
+    float* _hamming_window;
+    float* _mel_filter_bank;
 
 private:
     // Variables privées
-    int _num_channels;
-    int _frame_size;
     int _hop_size;
     int _mfcc_size;
-    float _samplerate;
-    float* _frame;
-    float* _hamming_window;
-    float* _mel_filter_bank;
+
     float* _dct_matrix;
-    float* _mfcc_coeffs;
+
 
     // Fonctions privées
 
