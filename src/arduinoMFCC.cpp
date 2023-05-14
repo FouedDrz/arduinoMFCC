@@ -16,9 +16,15 @@
 	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 */
-
-
 #include "arduinoMFCC.h"
+#ifndef PI
+#define PI 3.1415926535897932384626433832795
+#endif
+#if !defined(__SAM3X8E__)
+#error "Ce code est conçu pour être utilisé uniquement avec Arduino Due. Veuillez utiliser un Arduino Due pour le projet Neurospeech."
+#endif
+
+#define AUDIO_SAMPLE_RATE_EXACT 44100.0 // ou 8000.0
 
 arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size, float samplerate) {
     _num_channels = num_channels;
@@ -26,8 +32,6 @@ arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfc
     _hop_size = hop_size;
     _mfcc_size = mfcc_size;
     _samplerate=samplerate;
-	
-
     _frame = (float*)malloc(_frame_size * sizeof(float));
     _hamming_window = (float*)malloc(_frame_size * sizeof(float));
     _mel_filter_bank = (float*)malloc(_num_channels * _frame_size * sizeof(float));
@@ -51,11 +55,52 @@ void arduinoMFCC::create_hamming_window() {
     }
 }
 ////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::create_hamming_window(int _frame_size) {
+    // ... code pour créer la fenêtre de Hamming ...
+	// Fonction privée pour créer la fenêtre de Hamming
+    for (int i = 0; i < _frame_size; i++) {
+        _hamming_window[i] = 0.54 - 0.46 * cos(2 * PI * i / (_frame_size - 1));
+    }
+}
+////////////////////////////////////////////////////////////////////////////
 // Fonction privée pour créer les filtres de Mel
 void arduinoMFCC::create_mel_filter_bank() {
     float mel_low_freq = 0;
     //float mel_high_freq = 2595 * log10(1 + (AUDIO_SAMPLE_RATE_EXACT / 2) / 700);
-    float mel_high_freq = 2595 * log10(1 + (_samplerate / 2) / 0   0);
+    float mel_high_freq = 2595 * log10(1 + (_samplerate / 2) / 700);
+    float mel_freq_delta = (mel_high_freq - mel_low_freq) / (_num_channels + 1);
+    float* mel_f = (float*)malloc((_num_channels + 2) * sizeof(float));
+
+    for (int i = 0; i < _num_channels + 2; i++) {
+        mel_f[i] = mel_low_freq + i * mel_freq_delta;
+    }
+
+    for (int i = 0; i < _num_channels; i++) {
+        float* mel_filter = _mel_filter_bank + i * _frame_size;
+
+        for (int j = 0; j < _frame_size; j++) {
+            if (j < mel_f[i]) {
+                mel_filter[j] = 0;
+            }
+            else if (j >= mel_f[i] && j < mel_f[i + 1]) {
+                mel_filter[j] = (j - mel_f[i]) / (mel_f[i + 1] - mel_f[i]);
+            }
+            else if (j >= mel_f[i + 1] && j < mel_f[i + 2]) {
+                mel_filter[j] = (mel_f[i + 2] - j) / (mel_f[i + 2] - mel_f[i + 1]);
+            }
+            else {
+                mel_filter[j] = 0;
+            }
+        }
+    }
+
+    free(mel_f);
+}
+///////////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::create_mel_filter_bank(float _samplerate, int _num_channels,int _frame_size) {
+    float mel_low_freq = 0;
+    //float mel_high_freq = 2595 * log10(1 + (AUDIO_SAMPLE_RATE_EXACT / 2) / 700);
+    float mel_high_freq = 2595 * log10(1 + (_samplerate / 2) / 700);
     float mel_freq_delta = (mel_high_freq - mel_low_freq) / (_num_channels + 1);
     float* mel_f = (float*)malloc((_num_channels + 2) * sizeof(float));
 
@@ -85,6 +130,7 @@ void arduinoMFCC::create_mel_filter_bank() {
     free(mel_f);
 }
 
+//////////////////////////////////////////////////////////////////////////////////
 // Fonction privée pour créer la matrice de transformée de cosinus discrète (DCT)
 void arduinoMFCC::create_dct_matrix() {
     // ... code pour créer la matrice DCT ...
@@ -96,9 +142,15 @@ void arduinoMFCC::create_dct_matrix() {
 }
 
 }
-
+/////////////////////////////////////////////////////////////////////////////
 // Fonction privée pour appliquer la fenêtre de Hamming au signal audio
 void arduinoMFCC::apply_hamming_window() {
+    for (int n = 0; n < _frame_size; n++) {
+        _frame[n] = _frame[n] * _hamming_window[n];
+    }
+}
+/////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::apply_hamming_window(float *_frame) {
     for (int n = 0; n < _frame_size; n++) {
         _frame[n] = _frame[n] * _hamming_window[n];
     }
@@ -114,6 +166,17 @@ void arduinoMFCC::apply_mel_filter_bank() {
         _mfcc_coeffs[i] = log10f(output);
     }
 }
+/////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::apply_mel_filter_bank(int _num_channels, int _frame_size,float *_frame, float *_mfcc_coeffs) {
+    for (int i = 0; i < _num_channels; i++) {
+        float output = 0.0f;
+        for (int j = 0; j < _frame_size; j++) {
+            output += _frame[j] * _mel_filter_bank[i*_frame_size + j];
+        }
+        _mfcc_coeffs[i] = log10f(output);
+    }
+}
+
 /////////////////////////////////////////////////////////////////////////////
 
 // Fonction privée pour appliquer la transformée de cosinus discrète (DCT) au signal audio
@@ -133,6 +196,3 @@ void arduinoMFCC::apply_dct() {
         _mfcc_coeffs[i] = sum;
     }
 }
-
-
-
