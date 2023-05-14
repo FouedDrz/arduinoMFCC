@@ -30,6 +30,7 @@ public:
 
     // Fonctions publiques
     void compute();
+    void compute(int ,int ,int ,float *);
     void apply_hamming_window();
     void apply_hamming_window(float *);
     void apply_hamming_window(float *,float *);
@@ -38,7 +39,7 @@ public:
     void create_mel_filter_bank();
     void create_mel_filter_bank(float , int ,int, float* );
     void apply_dct();
-    void apply_dct(int , int ,int ,float *, float *);
+    void apply_dct(int , int ,int ,float *,float *, float *);
     void create_hamming_window();
     void create_hamming_window(int );
     void create_dct_matrix();
@@ -48,6 +49,7 @@ public:
     float* _frame;
     int _frame_size;
     float* _mfcc_coeffs;
+    float *_rmfcc_coeffs;
     int _num_channels;
     float* _hamming_window;
     float* _mel_filter_bank;
