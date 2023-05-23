@@ -37,7 +37,7 @@ arduinoMFCC::arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfc
     _mel_filter_bank = (float*)malloc(_num_channels * _frame_size * sizeof(float));
     _dct_matrix = (float*)malloc(_mfcc_size * _num_channels * sizeof(float));
     _rmfcc_coeffs = (float*)malloc(_mfcc_size * sizeof(float)); 
-    _mfcc_coeffs = (float*)malloc(_mfcc_size * sizeof(float)); 
+    _mfcc_coeffs = (float*)malloc(_num_channels* sizeof(float)); 	
 }
 
 void arduinoMFCC::compute() {
