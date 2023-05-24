@@ -51,7 +51,6 @@ public:
     void create_dct_matrix();
     void create_dct_matrix(float **);
 // 
-    float* coeffs;
     float _samplerate;
     float* _frame;
     uint16_t  _frame_size;
@@ -60,11 +59,13 @@ public:
     uint8_t  _num_channels;
     float* _hamming_window;
     float** _mel_filter_bank;
-private:
-    // Variables privées
     uint8_t  _hop_size;
     uint8_t  _mfcc_size;
     float** _dct_matrix;
+private:
+    // Variables privées
+        float* coeffs;
+
     // Fonctions privées
 
 };
