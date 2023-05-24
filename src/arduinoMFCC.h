@@ -31,8 +31,9 @@ public:
 
     // Fonctions publiques
     void compute();
-    void compute(uint8_t  ,uint8_t  ,uint16_t  ,float *);
-    void computebust(uint8_t  ,uint8_t  ,uint16_t  ,float *);
+    void compute(uint8_t ,uint16_t ,float , float *, float *);
+    void computebust(uint8_t ,uint16_t ,float , float *, float *);
+    void computebust_dct(uint8_t ,uint8_t ,uint16_t ,float *);
     void apply_hamming_window();
     void apply_hamming_window(float *);
     void apply_hamming_window(float *,float *);
