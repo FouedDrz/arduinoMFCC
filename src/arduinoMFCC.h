@@ -44,8 +44,6 @@ public:
     void apply_mel_filter_bank_power(uint16_t ,float *);
     void apply_dct();
     void apply_dct(uint8_t  , uint8_t  ,uint16_t  ,float **,float *, float *);
-    void apply_coeff_mfcc();
-    void apply_coeff_mfcc(uint8_t , uint8_t  ,float **,float *);
     void create_hamming_window();
     void create_hamming_window(uint16_t  );
     void create_hamming_window(uint16_t , float *);
