@@ -26,8 +26,6 @@
 #error "Ce code est conçu pour être utilisé uniquement avec Arduino Due. Veuillez utiliser un Arduino Due pour le projet Neurospeech."
 #endif
 
-#define AUDIO_SAMPLE_RATE_EXACT 44100.0 // ou 8000.0
-
 arduinoMFCC::arduinoMFCC(uint8_t  num_channels, uint16_t  frame_size, uint8_t  hop_size, uint8_t  mfcc_size, float samplerate) {
     _num_channels = num_channels;
     _frame_size = frame_size;
@@ -43,7 +41,7 @@ arduinoMFCC::arduinoMFCC(uint8_t  num_channels, uint16_t  frame_size, uint8_t  h
              }
     float **_dct_matrix  = (float **)malloc(_mfcc_size * sizeof(float *));
         for (uint8_t i = 0; i < _mfcc_size; i++) {
-             _mel_filter_bank[i] = (float *)malloc(_num_channels * sizeof(float));//
+             _dct_matrix[i] = (float *)malloc(_num_channels * sizeof(float));//
              }             
     //_dct_matrix = (float*)malloc(_mfcc_size * _num_channels * sizeof(float));
 
@@ -85,14 +83,28 @@ void arduinoMFCC::compute() {
     apply_dct();
 }
 //////////////////////////////////////////////////////////////////////////
-void arduinoMFCC::compute(uint8_t  _mfcc_size,uint8_t  _num_channels,uint16_t  _frame_size,float *_rmfcc_coeffs) {
+void arduinoMFCC::compute(uint8_t _num_channels,uint16_t _frame_size,float _samplerate, float *_frame, float *_mfcc_coeffs){
     // ... code pour calculer les coefficients arduinoMFCC ...
-    apply_hamming_window(_frame);
+    create_hamming_window(_frame_size, _hamming_window); 
+    apply_hamming_window(_frame,_hamming_window);
+    create_mel_filter_bank(_samplerate,_num_channels,_frame_size, _mel_filter_bank); 
+    apply_mel_filter_bank_power(_frame_size,_frame);
     apply_mel_filter_bank(_num_channels,_frame_size,_frame,_mel_filter_bank,_mfcc_coeffs);
-    apply_dct(_mfcc_size,_num_channels,_frame_size,_mel_filter_bank,_mfcc_coeffs,_rmfcc_coeffs);
+
     }
 //////////////////////////////////////////////////////////////////////////
-void arduinoMFCC::computebust(uint8_t  _mfcc_size,uint8_t  _num_channels,uint16_t  _frame_size,float *_rmfcc_coeffs) {
+void arduinoMFCC::computebust(uint8_t _num_channels,uint16_t _frame_size,float _samplerate, float *_frame, float *_mfcc_coeffs) {
+    // ... code pour calculer les coefficients arduinoMFCC ...
+    //pre_emphasis(_frame_size, _frame); 
+    create_hamming_window(_frame_size, _hamming_window); 
+    apply_hamming_window(_frame,_hamming_window);
+    create_mel_filter_bank(_samplerate,_num_channels,_frame_size,_mel_filter_bank); 
+    apply_mel_filter_bank_power(_frame_size,_frame);
+    apply_mel_filter_bank(_num_channels,_frame_size,_frame,_mel_filter_bank,_mfcc_coeffs);
+
+    }
+//////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::computebust_dct(uint8_t _mfcc_size,uint8_t _num_channels,uint16_t  _frame_size,float *_rmfcc_coeffs) {
     // ... code pour calculer les coefficients arduinoMFCC ...
     pre_emphasis(_frame_size, _frame); 
     create_hamming_window(_frame_size, _hamming_window); 
@@ -100,7 +112,6 @@ void arduinoMFCC::computebust(uint8_t  _mfcc_size,uint8_t  _num_channels,uint16_
     apply_mel_filter_bank(_num_channels,_frame_size,_frame,_mel_filter_bank,_mfcc_coeffs);
     apply_dct(_mfcc_size,_num_channels,_frame_size,_mel_filter_bank,_mfcc_coeffs,_rmfcc_coeffs);
     }
-//////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////
 // Fonction publique pour créer la fenêtre de Hamming
@@ -202,10 +213,13 @@ void arduinoMFCC::create_dct_matrix() {
 	float sqrt_2_over_n = sqrt(2.0 / _num_channels);
 	for (uint8_t  i = 0; i < _mfcc_size; i++) {
     for (uint8_t  j = 0; j < _num_channels; j++) {
-        _dct_matrix[i][j] = sqrt_2_over_n * cos((i + 0.5) * PI / _num_channels * (j + 0.5));
-    }
-}
+        //_dct_matrix[i][j] = sqrt_2_over_n *cos((M_PI * i * (j + 0.5)) / _num_channels);
+        _dct_matrix[i][j] =sqrt_2_over_n *cos((PI * i * (j + 0.5)) / _mfcc_size);
+        //Serial.print(_dct_matrix[i][j]);
+        // Serial.print("\t");
 
+}
+  }
 }
 /////////////////////////////////////////////////////////////////////////////
 // Fonction publique pour créer la matrice de transformée de cosinus discrète (DCT)
@@ -216,7 +230,9 @@ void arduinoMFCC::create_dct_matrix(float **_dct_matrix) {
 	for (uint8_t  i = 0; i < _mfcc_size; i++) {
     for (uint8_t  j = 0; j < _num_channels; j++) {
         //_dct_matrix[i][j] = sqrt_2_over_n *cos((M_PI * i * (j + 0.5)) / _num_channels);
-        _dct_matrix[i][j] = sqrt_2_over_n *cos((M_PI * i * (j + 0.5)) / _mfcc_size);
+        _dct_matrix[i][j] =cos((PI * i * (j + 0.5)) / _mfcc_size);
+         //     Serial.print(_dct_matrix[i][j]);
+         //     Serial.print("\t");
 
 
     }
