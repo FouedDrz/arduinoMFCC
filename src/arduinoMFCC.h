@@ -26,42 +26,46 @@
 class arduinoMFCC {
 public:
     // Constructeur
-    arduinoMFCC(int num_channels, int frame_size, int hop_size, int mfcc_size, float samplerate);
+    arduinoMFCC(uint8_t  num_channels, uint16_t  frame_size, uint8_t  hop_size, uint8_t  mfcc_size, float samplerate);
+    ~arduinoMFCC() ;
 
     // Fonctions publiques
     void compute();
-    void compute(int ,int ,int ,float *);
+    void compute(uint8_t  ,uint8_t  ,uint16_t  ,float *);
+    void computebust(uint8_t  ,uint8_t  ,uint16_t  ,float *);
     void apply_hamming_window();
     void apply_hamming_window(float *);
     void apply_hamming_window(float *,float *);
-    void apply_mel_filter_bank();
-    void apply_mel_filter_bank(int , int ,float *, float *, float *);
+    void pre_emphasis(uint16_t , float *);
+    void apply_mel_filter_bank();    
+    void apply_mel_filter_bank(uint8_t  , uint16_t  ,float *, float **, float *);
     void create_mel_filter_bank();
-    void create_mel_filter_bank(float , int ,int, float* );
+    void create_mel_filter_bank(float , uint8_t  ,uint16_t , float**);
+    void apply_mel_filter_bank_power(uint16_t ,float *);
     void apply_dct();
-    void apply_dct(int , int ,int ,float *,float *, float *);
+    void apply_dct(uint8_t  , uint8_t  ,uint16_t  ,float **,float *, float *);
+    void apply_coeff_mfcc();
+    void apply_coeff_mfcc(uint8_t , uint8_t  ,float **,float *);
     void create_hamming_window();
-    void create_hamming_window(int );
+    void create_hamming_window(uint16_t  );
+    void create_hamming_window(uint16_t , float *);
     void create_dct_matrix();
-  
+    void create_dct_matrix(float **);
+// 
     float* coeffs;
     float _samplerate;
     float* _frame;
-    int _frame_size;
+    uint16_t  _frame_size;
     float* _mfcc_coeffs;
     float *_rmfcc_coeffs;
-    int _num_channels;
+    uint8_t  _num_channels;
     float* _hamming_window;
-    float* _mel_filter_bank;
-
+    float** _mel_filter_bank;
 private:
     // Variables privées
-    int _hop_size;
-    int _mfcc_size;
-
-    float* _dct_matrix;
-
-
+    uint8_t  _hop_size;
+    uint8_t  _mfcc_size;
+    float** _dct_matrix;
     // Fonctions privées
 
 };
