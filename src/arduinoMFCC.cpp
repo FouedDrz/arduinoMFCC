@@ -293,42 +293,16 @@ void arduinoMFCC::apply_dct() {
         }
     }
 }
-/////////////////////////////////////////////////////////////////////////////
-void arduinoMFCC::apply_coeff_mfcc() {
-    for (uint8_t  i = 0; i < _mfcc_size; i++) {
-        _mfcc_coeffs[i] = 0.0;
-        for (uint8_t  j = 0; j < _num_channels; j++) {
-            _mfcc_coeffs[i] += _mel_filter_bank[j][i] * log10(_mel_filter_bank[j][i]);
-        }
-    }
-}
-
-/////////////////////////////////////////////////////////////////////////////
-
-// Fonction publique pour appliquer la transformée de cosinus discrète (DCT) au signal audio
-void arduinoMFCC::apply_coeff_mfcc(uint8_t  _mfcc_size, uint8_t  _num_channels,float **_mel_filter_bank,float *_mfcc_coeffs) {
-    for (uint8_t  i = 0; i < _mfcc_size; i++) {
-        _mfcc_coeffs[i] = 0.0;
-        for (uint8_t  j = 0; j < _num_channels; j++) {
-            _mfcc_coeffs[i] += _mel_filter_bank[j][i] * log10(_mel_filter_bank[j][i]);
-        }
-    }
-}
 
 /////////////////////////////////////////////////////////////////////////////
 
 // Fonction publique pour appliquer la transformée de cosinus discrète (DCT) au signal audio
 void arduinoMFCC::apply_dct(uint8_t  _mfcc_size, uint8_t  _num_channels,uint16_t  _frame_size,float **_mel_filter_bank,float *_mfcc_coeffs, float *_rmfcc_coeffs) {
-   /* for (uint8_t  i = 0; i < _mfcc_size; i++) {
-        _mfcc_coeffs[i] = 0.0;
-        for (uint8_t  j = 0; j < _num_channels; j++) {
-            _mfcc_coeffs[i] += _mel_filter_bank[j][i] * log10(_mel_filter_bank[j][i]);
-        }
-    }*/
     for (uint8_t  i = 0; i < _mfcc_size; i++) {
-        _rmfcc_coeffs[i] = 0.0;
+        float sum = 0.0;
         for (uint8_t  j = 0; j < _num_channels; j++) {
             _rmfcc_coeffs[i] += _mfcc_coeffs[j] *_dct_matrix[i][j];
         }
+        _rmfcc_coeffs[i] =sum;
     }
 }
