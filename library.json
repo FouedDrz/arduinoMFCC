@@ -16,7 +16,7 @@
     }
   ],
   "version": "1.0.0",
-  "frameworks": ["arduino","mbed","espidf"],
+  "frameworks": ["arduino","espidf"],
   "platforms": "*",
   "headers": "arduinoMFCC.h"
 }
