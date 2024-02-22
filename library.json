@@ -8,13 +8,11 @@
     "url": "https://github.com/FouedDrz/arduinoMFCC.git"
   },
   "authors":
-  [
     {
       "name": "Foued DERRAZ",
       "email": "fouad.derraz@ieee.org",
       "maintainer": true
-    }
-  ],
+    },
   "version": "1.0.0",
   "frameworks": ["arduino","espidf"],
   "platforms": "*",
