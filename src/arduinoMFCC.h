@@ -48,6 +48,9 @@ public:
     void create_hamming_window();
     void create_hamming_window(uint16_t  );
     void create_hamming_window(uint16_t , float *);
+    void create_hanning_window();
+    void create_hanning_window(uint16_t  );
+    void create_hanning_window(uint16_t , float *);
     void create_dct_matrix();
     void create_dct_matrix(float **);
 // 
@@ -58,6 +61,7 @@ public:
     float *_rmfcc_coeffs;
     uint8_t  _num_channels;
     float* _hamming_window;
+    float* _hanning_window;
     float** _mel_filter_bank;
     uint8_t  _hop_size;
     uint8_t  _mfcc_size;
