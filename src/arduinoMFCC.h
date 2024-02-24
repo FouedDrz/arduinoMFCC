@@ -58,7 +58,7 @@ public:
     void create_hanning_window(uint16_t , float *);
     void create_dct_matrix();
     void create_dct_matrix(float **);
-// 
+    // 
     float _samplerate;
     float* _frame;
     uint16_t  _frame_size;
