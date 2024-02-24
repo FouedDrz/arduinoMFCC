@@ -37,6 +37,11 @@ public:
     void apply_hamming_window();
     void apply_hamming_window(float *);
     void apply_hamming_window(float *,float *);
+    //
+    void apply_hanning_window();
+    void apply_hanning_window(float *);
+    void apply_hanning_window(float *,float *);
+    //
     void pre_emphasis(uint16_t , float *);
     void apply_mel_filter_bank();    
     void apply_mel_filter_bank(uint8_t  , uint16_t  ,float *, float **, float *);
