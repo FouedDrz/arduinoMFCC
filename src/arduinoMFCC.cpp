@@ -139,7 +139,31 @@ void arduinoMFCC::create_hamming_window(uint16_t  _frame_size, float *_hamming_w
     }
 }
 
-
+///////////////////////////////////////////////////////////////////////////
+// Fonction publique pour créer la fenêtre de Hanning
+void arduinoMFCC::create_hanning_window() {
+    // ... code pour créer la fenêtre de Hanning ...
+	// Fonction publique pour créer la fenêtre de Hanning
+    for (uint16_t  i = 0; i < _frame_size; i++) {
+        _hanning_window[i] = 0.5 - 0.5 * cos(2 * PI * i / (_frame_size - 1));
+    }
+}
+////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::create_hanning_window(uint16_t  _frame_size) {
+    // ... code pour créer la fenêtre de Hanning ...
+	// Fonction publique pour créer la fenêtre de Hanning
+    for (uint16_t  i = 0; i < _frame_size; i++) {
+        _hanning_window[i] = 0.5 - 0.5 * cos(2 * PI * i / (_frame_size - 1));
+    }
+}
+///////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::create_hanning_window(uint16_t  _frame_size, float *_hanning_window) {
+    // ... code pour créer la fenêtre de Hanning ...
+	// Fonction publique pour créer la fenêtre de Hanning
+    for (uint16_t  i = 0; i < _frame_size; i++) {
+        _hanning_window[i] = 0.5 - 0.5 * cos(2 * PI * i / (_frame_size - 1));
+    }
+}
 ///////////////////////////////////////////////////////////////////////////
 // Fonction publique pour créer les filtres de Mel
 void arduinoMFCC::create_mel_filter_bank()
