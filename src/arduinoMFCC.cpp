@@ -282,6 +282,29 @@ void arduinoMFCC::apply_hamming_window(float *_frame,float *_hamming_window) {
         _frame[n] = _frame[n] * _hamming_window[n];
     }
 }
+
+/////////////////////////////////////////////////////////////////////////////
+// Fonction publique pour appliquer la fenêtre de Hamming au signal audio
+void arduinoMFCC::apply_hanning_window() {
+    for (uint8_t  n = 0; n < _frame_size; n++) {
+        _frame[n] = _frame[n] * _hanning_window[n];
+    }
+}
+/////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::apply_hanning_window(float *_frame) {
+    for (uint16_t  n = 0; n < _frame_size; n++) {
+        _frame[n] = _frame[n] * _hanning_window[n];
+    }
+}
+/////////////////////////////////////////////////////////////////////////////
+void arduinoMFCC::apply_hanning_window(float *_frame,float *_hanning_window) {
+    for (uint16_t  n = 0; n < _frame_size; n++) {
+        _frame[n] = _frame[n] * _hanning_window[n];
+    }
+}
+
+
+
 /////////////////////////////////////////////////////////////////////////////
 // Fonction publique pour appliquer les filtres de Mel au signal audio
 void arduinoMFCC::apply_mel_filter_bank() {
